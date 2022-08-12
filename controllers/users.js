@@ -9,13 +9,8 @@ module.exports.getUsers = (req, res) => {
 module.exports.getUser = (req, res) => {
   User.findId(req.params.id)
     .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Переданы некорректные данные' });
-      } else {
-        res.status(500).send({ message: 'Переданы некорректные данные' });
-      }
-    });
+    .catch(() => res.status(500).send({ message: 'Произошла ошибка при запросе пользователя' }));
+};
 
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
