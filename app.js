@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { handleError } = require('./errors/handleError');
 
 const { PORT = 3000 } = process.env;
 
@@ -20,6 +21,8 @@ app.use((req, res, next) => {
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-});
+app.use((req, res) => handleError(
+  { res, err: { statusCode: 404, message: 'Такого пути не найдено' } },
+));
+
+app.listen(PORT);
