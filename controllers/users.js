@@ -84,7 +84,8 @@ module.exports.createUser = async (req, res, next) => {
     const user = await User.create({
       name, about, avatar, email, password: hashed,
     });
-    res.send(user);
+    res.send(modelToDto(user))
+      .end();
   } catch (err) {
     if (err.code === 11000) {
       next(new ConflictError('Пользователь с таким email уже существует'));
